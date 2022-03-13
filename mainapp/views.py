@@ -10,7 +10,7 @@ import base64
 import random   
 import string  
 import secrets 
-
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -24,8 +24,8 @@ def url_shortner(raw_lnk):
 
 
 
-def http_response(request):
-    return HttpResponse('<h1>Hello :)</h1>')    
+def home(request):
+    return render(request,'mainapp/home.html')    
  
 def get_url(request,short_url):
     q=""
@@ -35,7 +35,7 @@ def get_url(request,short_url):
     raw_url=row[1]
     response = redirect(raw_url)
     return response
-
+@login_required(login_url='/login/') #redirect when user is not logged in
 def add_url(request):
     add_template_name='mainapp/add_url.html'
     redirect_url='home'

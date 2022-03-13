@@ -6,7 +6,7 @@ from . import views
 
 app_name = 'mainapp'
 urlpatterns = [
-    path('',views.http_response,name='home'),
+    path('',views.home,name='home'),
     path('lnk/<str:short_url>/',views.get_url,name='get_url'),
     path('add/',views.add_url,name='add_url'),
     

@@ -51,16 +51,15 @@
 	      </button>
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav m-auto">
-	        	<li class="nav-item active"><a href="#" class="nav-link">{% trans "Home" %}</a></li>
+	        	
 
 
 	        	<!--statrt of header items -->
+            <li class="nav-item active"><a href="{% url  'mainapp:home' %}" class="nav-link">{% trans "Home" %}</a></li>
+            <li class="nav-item active"><a href="{% url  'mainapp:home' %}" class="nav-link">{% trans "my urls" %}</a></li>
+            <li class="nav-item active"><a href="{% url  'register' %}" class="nav-link">{% trans "register" %}</a></li>
+            
 
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans "Posts" %} </a>
-              <div class="dropdown-menu" aria-labelledby="dropdown04">
-              	<a class="dropdown-item" href="#">{% trans "add post" %} </a>
-        
             
             <!--end of header items-->
 
@@ -68,7 +67,7 @@
 
 
               {% if user.is_authenticated%}
-              <li class="nav-item"><a href="/profile" class="nav-link">profile</a></li>
+              
               <li class="nav-item"><a href="/logout" style="color: red;" class="nav-link">{% trans "logout" %}</a></li>
                 {% else %}
                 <li class="nav-item"><a href="/login" style="color: red;" class="nav-link">{% trans "login" %}</a></li>
