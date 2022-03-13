@@ -42,11 +42,12 @@ def add_url(request):
     form = adding_url_form(request.POST or None)
     if form.is_valid():
         data=form.save(commit=False)
-        messages.success(request,"item has been added successfully")
+        
         form = forms.adding_url_form(request.POST or None)        
         data.owner = request.user.username
         data.short_url=url_shortner(data.raw_url)
         data.save()
+        messages.success(request,"item has been added successfully "+"127.0.0.1:8000/lnk/"+data.short_url)
         return redirect('mainapp:home')
     else:
         print('else')
