@@ -1,4 +1,5 @@
 
+from unicodedata import name
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
@@ -9,6 +10,7 @@ urlpatterns = [
     path('',views.home,name='home'),
     path('lnk/<str:short_url>/',views.get_url,name='get_url'),
     path('add/',views.add_url,name='add_url'),
+    path('myurls/',views.show_urls,name='myurls'),
     
 
 

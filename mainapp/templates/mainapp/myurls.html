@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{%  load static %}
+{% block content %}
+<link rel="stylesheet"  href="{%  static  'mainapp/css/zebrastrepedtable.css'  %}">
+    <link rel="stylesheet"  href="{%  static  'mainapp/css/logp.css'  %}">
+    <link rel="stylesheet"  href="{%  static  'mainapp/css/logp.css'  %}">
+
+    <script src="{%  static  'stuffs/js/js_for_tabels.js'  %}"></script> 
+
+
+
+
+
+
+
+
+
+
+   
+<table>
+    <tr>
+        
+        <th>id</th>
+        <th>raw</th>
+        <th>short_url</th>
+        <th>owner</th>
+        <th>exp_time</th>
+        <th>creation_time</th>
+        <th> visitor_count</th>
+        <th> vvvvvvdayayaya</th>
+        <th>  </th>
+        <th>  </th>
+        <th>  </th>
+        </tr>
+{% with index=0 %}
+{% with table='gpu' %}
+{% for url in urls  %}
+
+
+    <tr>
+    
+    <td>{{url.id}}</td>
+    <td>{{url.raw_url}}</td>
+    <td><a href="http://127.0.0.1:8000/lnk/{{url.short_url}}">{{url.short_url}}</a></td>
+    <td>{{url.owner}}</td>
+    <td>{{url.exp_time}}</td>
+    <td>{{url.creation_time}}</td>
+    <td>{{url.visitor_count}}</td>
+    <td>{{url.visit_day}}</td>
+    
+    
+             
+    </tr>
+    
+{% endfor %}
+{% endwith %}
+{% endwith %}
+</table>
+
+
+{% endblock content %}
