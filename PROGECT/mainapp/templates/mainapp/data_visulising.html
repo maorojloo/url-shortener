@@ -1,0 +1,95 @@
+{% extends 'base.html'%}
+{% block content %}
+
+
+
+
+<p class="col-sm-12"   style="color: aqua;">hry</p>
+<canvas id="myChart" style="height:40vh; width:80vw"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+  var pk ={{ pk }}
+  var endpoint ='/api/chart/'+pk
+  const labls =[]
+  const dataa =[]
+  func1();
+
+function func1(){
+
+  console.log('sas');
+  
+  $.ajax({  
+  method:"GET",
+  url: endpoint ,
+  
+  success:  function(data){
+    console.log(data)
+    console.log('///')
+    func2(data.l,data.d)
+    
+  },
+
+  error: function(error_data){ console.log("error") , console.log(error_data)},})
+}
+
+function func2(l,d){
+
+
+const ctx = document.getElementById('myChart');
+console.log('charrrtt');
+
+const myChart = new Chart(ctx, {
+    type: 'line',
+    //bar-bubble-line-doughnut-radar-polarArea-scatter
+    data: {
+        labels: l ,
+        datasets: [{
+            label: '# of Votes',
+            data: d,
+
+            
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+}
+
+
+  
+
+
+
+
+
+
+  
+  </script>
+{% endblock content %}
+

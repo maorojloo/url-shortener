@@ -17,7 +17,7 @@ class url_table(models.Model):
     creation_time=models.DateTimeField(default=now)
 
     visitor_count=models.IntegerField(default=0)
-    visit_day=models.CharField(default='{}',max_length=100000)
+    visit_day=models.CharField(default='{}',max_length=100000) 
 
 
 

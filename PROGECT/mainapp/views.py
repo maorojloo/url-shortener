@@ -9,11 +9,27 @@ from .forms import adding_url_form
 import base64
 import random   
 import string  
+import re
 import secrets 
 from django.contrib.auth.decorators import login_required
 import ast
 from datetime import datetime
-
+from django.shortcuts import render
+from django.views.generic import TemplateView
+import json
+from django.http import JsonResponse
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.views.generic import View
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import authentication, permissions
+from django.contrib.auth.models import User
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.response import Response
+from datetime import date, timedelta
 
 
 # Create your views here.
@@ -38,7 +54,7 @@ def visit_saver(id):
     convertedDict = ast.literal_eval(obj.visit_day)
     print(type(convertedDict))
     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1")
-    current_time=datetime.today().strftime('%Y/%m/%d')
+    current_time=datetime.today().strftime('%Y-%m-%d')
     if current_time in convertedDict:
         x_count=convertedDict.get(current_time)
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1")
@@ -65,8 +81,11 @@ def get_url(request,short_url):
     row = cursor.fetchone()
     raw_url=row[1]
     pk=row[0]
+    print(pk)
     visit_saver(pk)
-    response = redirect(raw_url)
+    redirect_url="http://"+raw_url
+    
+    response = redirect(redirect_url)
     return response
 
 
@@ -82,9 +101,22 @@ def add_url(request):
         form = forms.adding_url_form(request.POST or None)        
         data.owner = request.user.username
         data.visit_day='{}'
+        
+        x = re.findall("^http://(.*)|^https://(.*)", data.raw_url)
+        if x:
+            x=x[0]
+        if x[0]=="":
+            data.raw_url=x[1]
+        if x[1]=="":
+            data.raw_url=x[0]
+
+        else:
+            pass
+
         data.short_url=url_shortner(data.raw_url)
         data.save()
         messages.success(request,"item has been added successfully "+"127.0.0.1:8000/lnk/"+data.short_url)
+        visit_saver(data.id)
         return redirect('mainapp:home')
     else:
         print('else')
@@ -98,12 +130,44 @@ def add_url(request):
 def show_urls(request):
     urls = models.url_table.objects.all().filter(owner=request.user.username)
     return render(request,'mainapp/myurls.html',{'urls':urls})
-
-
     
     
 
+# Creating views
+def api_data(TemplateView):
+    return JsonResponse(data = {'a': 10,'b': 20,})
 
+def chart(request,pk):
+    return render(request,'mainapp/data_visulising.html',{"pk":pk})    
+
+class chart_data(APIView):
+
+    authentication_classes = []
+    permission_classes = []
+
+    
+    def get(self,request, format=None,pk=None):
+        #print(pk)
+        obj = models.url_table.objects.get(id=pk)
+        #obj = models.url_table.objects.all()
+        #obj = models.url_table.objects.all().filter(pk=3)
+        print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+        print(obj)
+        
+        #x = re.findall("^http://(.*)|^https://(.*)", data.raw_url)
+        
+        sdate = date(2008, 8, 15)   # start date
+        edate = date(2008, 9, 15)   # end date
+
+        delta = edate - sdate       # as timedelta
+
+        for i in range(delta.days + 1):
+            day = sdate + timedelta(days=i)
+            print(day)
+
+
+
+        return Response(pk) 
 
 
 

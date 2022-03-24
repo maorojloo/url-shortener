@@ -8,7 +8,12 @@
     <script src="{%  static  'stuffs/js/js_for_tabels.js'  %}"></script> 
 
 
+    {% for o in lsts%}
 
+    {{o}}
+
+
+    {% endfor %}
 
 
 
@@ -19,7 +24,8 @@
    
 <table>
     <tr>
-        
+        <th>-------</th>
+
         <th>id</th>
         <th>raw</th>
         <th>short_url</th>
@@ -28,17 +34,17 @@
         <th>creation_time</th>
         <th> visitor_count</th>
         <th> vvvvvvdayayaya</th>
-        <th>  </th>
+        <th>chart</th>
         <th>  </th>
         <th>  </th>
         </tr>
 {% with index=0 %}
 {% with table='gpu' %}
-{% for url in urls  %}
-
+{% for url in urls %}
+{{ index|add:"1" }}
 
     <tr>
-    
+    <td>{{index}}</td>
     <td>{{url.id}}</td>
     <td>{{url.raw_url}}</td>
     <td><a href="http://127.0.0.1:8000/lnk/{{url.short_url}}">{{url.short_url}}</a></td>
@@ -47,12 +53,13 @@
     <td>{{url.creation_time}}</td>
     <td>{{url.visitor_count}}</td>
     <td>{{url.visit_day}}</td>
-    
+    <td><a href="" </td>
     
              
     </tr>
     
 {% endfor %}
+
 {% endwith %}
 {% endwith %}
 </table>
