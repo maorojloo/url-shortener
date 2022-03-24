@@ -1,3 +1,4 @@
+from cProfile import label
 from django.shortcuts import render
 from django.http import HttpResponse
 from . import models
@@ -6,8 +7,7 @@ from django.shortcuts import redirect
 from . import forms
 from django.contrib import messages
 from .forms import adding_url_form
-import base64
-import random   
+import json
 import string  
 import re
 import secrets 
@@ -52,14 +52,9 @@ def visit_saver(id):
     obj.visitor_count = obj.visitor_count+1
     
     convertedDict = ast.literal_eval(obj.visit_day)
-    print(type(convertedDict))
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1")
     current_time=datetime.today().strftime('%Y-%m-%d')
     if current_time in convertedDict:
         x_count=convertedDict.get(current_time)
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1")
-        print(x_count)
-        print(type(x_count))
         x_count=x_count+1
         convertedDict.update({current_time: x_count}) 
     else:
@@ -147,17 +142,28 @@ class chart_data(APIView):
 
     
     def get(self,request, format=None,pk=None):
-        #print(pk)
         obj = models.url_table.objects.get(id=pk)
-        #obj = models.url_table.objects.all()
-        #obj = models.url_table.objects.all().filter(pk=3)
-        print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
-        print(obj)
+        str=obj.visit_day
+        str = str.replace("\'", "\"")
+        visit_day_dict = json.loads(str)
+
+
+        labels=list(visit_day_dict.keys())
+        datas=list(visit_day_dict.values())
+        print(obj.creation_time.date())
+
+"""
+
+
+    
+
+        from datetime import date, timedelta,datetime
+        
         
         #x = re.findall("^http://(.*)|^https://(.*)", data.raw_url)
         
         sdate = date(2008, 8, 15)   # start date
-        edate = date(2008, 9, 15)   # end date
+        edate = datetime.date(datetime.now())   # end date
 
         delta = edate - sdate       # as timedelta
 
@@ -166,8 +172,13 @@ class chart_data(APIView):
             print(day)
 
 
+"""
 
-        return Response(pk) 
+
+
+
+
+        return Response({'l':labels,'d':datas}) 
 
 
 
