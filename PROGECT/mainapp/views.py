@@ -1,3 +1,4 @@
+
 from cProfile import label
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -148,39 +149,31 @@ class chart_data(APIView):
         visit_day_dict = json.loads(str)
 
 
-        labels=list(visit_day_dict.keys())
-        datas=list(visit_day_dict.values())
-        print(obj.creation_time.date())
-
-"""
 
 
-    
 
-        from datetime import date, timedelta,datetime
-        
-        
-        #x = re.findall("^http://(.*)|^https://(.*)", data.raw_url)
-        
-        sdate = date(2008, 8, 15)   # start date
+        sdate=obj.creation_time.date()
         edate = datetime.date(datetime.now())   # end date
-
         delta = edate - sdate       # as timedelta
 
         for i in range(delta.days + 1):
             day = sdate + timedelta(days=i)
+            x = visit_day_dict.setdefault(day.strftime('%Y-%m-%d'), 0)
             print(day)
 
+        ds=sorted (visit_day_dict.keys())
+        s_d={}
+        for d in ds:
+            s_d.update({d:visit_day_dict.get(d)})
+            print(d)
 
-"""
+
+        print(s_d)
+        labels=list(s_d.keys())
+        datas=list(s_d.values())
 
 
 
 
 
         return Response({'l':labels,'d':datas}) 
-
-
-
-    
-    
